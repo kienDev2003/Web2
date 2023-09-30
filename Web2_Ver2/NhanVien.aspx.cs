@@ -45,13 +45,15 @@ namespace Web2_Ver2
             // Tạo một DataTable và nạp dữ liệu từ cơ sở dữ liệu
             DataTable dt = new DataTable();
             Conn.GetConnection();
-            String sql = "SELECT * FROM tbl_Accounts";
+            String sql = "SELECT manhanvien,tennhanvien,chucvu,email,taikhoan,matkhau,ngaycapnhat FROM tbl_Accounts";
             SqlDataAdapter data = new SqlDataAdapter(sql, Conn.GetConnection());
             data.Fill(dt);
 
             // Tạo một tệp tin Excel tạm thời
             string tempFileName = Path.GetTempFileName();
             FileInfo newFile = new FileInfo(tempFileName);
+
+            ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
 
             using (ExcelPackage package = new ExcelPackage(newFile))
             {
@@ -80,7 +82,7 @@ namespace Web2_Ver2
             //Tạo datatable chứa dữ liệu
             DataTable dt = new DataTable();
             Conn.GetConnection();
-            String sql = "SELECT * FROM tbl_Accounts";
+            String sql = "SELECT manhanvien,tennhanvien,chucvu,email,taikhoan,matkhau,ngaycapnhat FROM tbl_Accounts";
             SqlDataAdapter data = new SqlDataAdapter(sql, Conn.GetConnection());
             data.Fill(dt);
 
@@ -129,7 +131,7 @@ namespace Web2_Ver2
         {
             Conn.GetConnection();
             DataTable dt = new DataTable();
-            String sql = "SELECT * FROM tbl_Accounts";
+            String sql = "SELECT * FROM tbl_Accounts ORDER BY date DESC";
             SqlDataAdapter data = new SqlDataAdapter(sql, Conn.GetConnection());
             data.Fill(dt);
             gvData.DataSource = dt;
@@ -142,7 +144,7 @@ namespace Web2_Ver2
             DataTable db = new DataTable();
 
             Conn.GetConnection();
-            String sql = "SELECT * FROM tbl_Accounts WHERE tennhanvien LIKE '%" + sreach + "%'";
+            String sql = "SELECT * FROM tbl_Accounts WHERE tennhanvien LIKE '%N" + sreach + "%' ORDER BY date DESC";
             SqlDataAdapter data = new SqlDataAdapter(sql, Conn.GetConnection());
             data.Fill(db);
             gvData.DataSource = db;
@@ -227,7 +229,7 @@ namespace Web2_Ver2
             Conn.GetConnection();
             string update = "UPDATE tbl_Accounts SET tennhanvien=@tennhanvien," +
                             " chucvu=@chucvu, email=@email, taikhoan=@taikhoan," +
-                            "matkhau=@matkhau, ngaycapnhat=@ngaycapnhat WHERE manhanvien=@manhanvien";
+                            "matkhau=@matkhau, ngaycapnhat=@ngaycapnhat,date=@date WHERE manhanvien=@manhanvien";
 
             SqlCommand cmd = new SqlCommand(update, Conn.GetConnection());
             cmd.Parameters.AddWithValue("@tennhanvien", (gvData.Rows[e.RowIndex].FindControl("txtName") as TextBox).Text.Trim());
@@ -236,6 +238,7 @@ namespace Web2_Ver2
             cmd.Parameters.AddWithValue("@taikhoan", (gvData.Rows[e.RowIndex].FindControl("txtTaiKhoan") as TextBox).Text.Trim());
             cmd.Parameters.AddWithValue("@matkhau", (gvData.Rows[e.RowIndex].FindControl("txtMatKhau") as TextBox).Text.Trim());
             cmd.Parameters.AddWithValue("@ngaycapnhat", Date.GetCurrentDateTimeString());
+            cmd.Parameters.AddWithValue("@date", Date.DateSapXep());
             cmd.Parameters.AddWithValue("@manhanvien", gvData.DataKeys[e.RowIndex].Value.ToString());
 
             cmd.ExecuteNonQuery();

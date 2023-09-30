@@ -37,7 +37,7 @@ namespace Web2_Ver2
         {
             Conn.GetConnection();
             DataTable dt = new DataTable();
-            String sql = "SELECT * FROM tbl_DonXuat";
+            String sql = "SELECT * FROM tbl_DonXuat ORDER BY date DESC";
             SqlDataAdapter data = new SqlDataAdapter(sql, Conn.GetConnection());
             data.Fill(dt);
             gvData.DataSource = dt;
@@ -49,13 +49,18 @@ namespace Web2_Ver2
             // Tạo một DataTable và nạp dữ liệu từ cơ sở dữ liệu
             DataTable dt = new DataTable();
             Conn.GetConnection();
-            String sql = "SELECT * FROM tbl_DonXuat";
+            String sql = "SELECT madonhang,tenkhachhang,sodienthoai,diachi,ngaycapnhat," +
+                         "loaisanpham,soluongsanpham FROM tbl_DonXuat";
             SqlDataAdapter data = new SqlDataAdapter(sql, Conn.GetConnection());
             data.Fill(dt);
 
             // Tạo một tệp tin Excel tạm thời
             string tempFileName = Path.GetTempFileName();
             FileInfo newFile = new FileInfo(tempFileName);
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+
 
             using (ExcelPackage package = new ExcelPackage(newFile))
             {
@@ -97,7 +102,8 @@ namespace Web2_Ver2
             //Tạo datatable chứa dữ liệu
             DataTable dt = new DataTable();
             Conn.GetConnection();
-            String sql = "SELECT * FROM tbl_DonXuat";
+            String sql = "SELECT madonhang,tenkhachhang,sodienthoai,diachi,ngaycapnhat," +
+                         "loaisanpham,soluongsanpham FROM tbl_DonXuat";
             SqlDataAdapter data = new SqlDataAdapter(sql, Conn.GetConnection());
             data.Fill(dt);
 
@@ -148,7 +154,7 @@ namespace Web2_Ver2
             DataTable db = new DataTable();
 
             Conn.GetConnection();
-            String sql = "SELECT * FROM tbl_DonXuat WHERE tenkhachhang LIKE '%" + sreach + "%'";
+            String sql = "SELECT * FROM tbl_DonXuat WHERE tenkhachhang LIKE '%N" + sreach + "%' ORDER BY date DESC";
             SqlDataAdapter data = new SqlDataAdapter(sql, Conn.GetConnection());
             data.Fill(db);
             gvData.DataSource = db;
@@ -190,8 +196,8 @@ namespace Web2_Ver2
             {
                 Conn.GetConnection();
                 String insert = "INSERT INTO  tbl_DonXuat (madonhang, tenkhachhang, loaisanpham," +
-                                "sodienthoai, diachi,soluongsanpham, ngaycapnhat)" +
-                                "VALUES (@iD, @Name, @SP, @SDT, @DC,@SLSP, @Day)";
+                                "sodienthoai, diachi,soluongsanpham, ngaycapnhat,date)" +
+                                "VALUES (@iD, @Name, @SP, @SDT, @DC,@SLSP, @Day,@date)";
 
                 SqlCommand cmd = new SqlCommand(insert, Conn.GetConnection());
                 cmd.Parameters.AddWithValue("@iD", iD);
@@ -201,6 +207,7 @@ namespace Web2_Ver2
                 cmd.Parameters.AddWithValue("@DC", DC);
                 cmd.Parameters.AddWithValue("@SLSP", SLSP);
                 cmd.Parameters.AddWithValue("@Day", Day);
+                cmd.Parameters.AddWithValue("@date", Date.DateSapXep());
 
                 int check = cmd.ExecuteNonQuery();
 
@@ -243,11 +250,12 @@ namespace Web2_Ver2
                 }
                 reader.Close();
                 int SLN = SLC - SLM;
-                String updateSLSP = "UPDATE tbl_Products SET soluong=@SLN,ngaycapnhat=@day WHERE tensanpham=@tensanpham";
+                String updateSLSP = "UPDATE tbl_Products SET soluong=@SLN,ngaycapnhat=@day,date=@date WHERE tensanpham=@tensanpham";
                 SqlCommand updateCmm = new SqlCommand(updateSLSP, Conn.GetConnection());
                 updateCmm.Parameters.AddWithValue("@SLN", SLN.ToString());
                 updateCmm.Parameters.AddWithValue("@tensanpham", ListDanhSach.SelectedValue.ToString());
                 updateCmm.Parameters.AddWithValue("@day", Date.GetCurrentDateTimeString());
+                updateCmm.Parameters.AddWithValue("@date", Date.DateSapXep());
 
                 int check = updateCmm.ExecuteNonQuery();
 
@@ -265,8 +273,8 @@ namespace Web2_Ver2
         public void insertThongKe()
         {
             Conn.GetConnection();
-            String insertThongKe = "INSERT INTO tbl_ThongKe (madonhang,trangthai,tenkhachhang,tensanpham,soluong,ngaycapnhat)" +
-                                           "VALUES (@madonhang,@trangthai,@tenkhachhang,@tensanpham,@soluong,@Day)";
+            String insertThongKe = "INSERT INTO tbl_ThongKe (madonhang,trangthai,tenkhachhang,tensanpham,soluong,ngaycapnhat,date)" +
+                                           "VALUES (@madonhang,@trangthai,@tenkhachhang,@tensanpham,@soluong,@Day,@date)";
             SqlCommand insertThongKeCmm = new SqlCommand(insertThongKe, Conn.GetConnection());
             insertThongKeCmm.Parameters.AddWithValue("@madonhang", iD);
             insertThongKeCmm.Parameters.AddWithValue("@trangthai", "Xuất Hàng");
@@ -274,6 +282,7 @@ namespace Web2_Ver2
             insertThongKeCmm.Parameters.AddWithValue("@tensanpham", SP);
             insertThongKeCmm.Parameters.AddWithValue("@soluong", SLSP);
             insertThongKeCmm.Parameters.AddWithValue("@Day", Day);
+            insertThongKeCmm.Parameters.AddWithValue("@date", Date.DateSapXep());
             int check = insertThongKeCmm.ExecuteNonQuery();
             if (check > 0)
             {

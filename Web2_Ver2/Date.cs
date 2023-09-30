@@ -76,5 +76,21 @@ namespace Web2_Ver2
             return dateNow;
         }
 
+        public static DateTime DateSapXep()
+        {
+            TimeZoneInfo vietnamTimeZone = TimeZoneInfo.FindSystemTimeZoneById("SE Asia Standard Time");
+
+            // Lấy thời gian hiện tại theo múi giờ của Việt Nam
+            DateTime currentVietnamDateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, vietnamTimeZone);
+
+            int day = currentVietnamDateTime.Day;
+            int month = currentVietnamDateTime.Month;
+            int year = currentVietnamDateTime.Year;
+
+            DateTime date = new DateTime(year, month, day);
+            return date;
+
+        }
+
     }
 }

@@ -38,10 +38,6 @@
                         <input runat="server" id="txtDungLuong" type="text" placeholder="Nhập dung lượng bộ nhớ" required>
                     </div>
                     <div class="input-box">
-                        <span class="details">Số Lượng</span>
-                        <input runat="server" id="txtSoLuong" type="text" placeholder="Nhập số lượng sản phẩm" required>
-                    </div>
-                    <div class="input-box">
                         <span class="details">Giá Bán</span>
                         <input runat="server" id="txtGiaBan" type="text" placeholder="Nhập giá bán sản phẩm" required>
                     </div>

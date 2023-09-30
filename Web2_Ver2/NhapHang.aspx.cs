@@ -47,7 +47,7 @@ namespace Web2_Ver2
             // Tạo một DataTable và nạp dữ liệu từ cơ sở dữ liệu
             DataTable dt = new DataTable();
             Conn.GetConnection();
-            String sql = "SELECT * FROM tbl_NhapHang";
+            String sql = "SELECT madonhang,tennhanvien,tennhacungcap,loaisanpham,soluongsanpham,ngaycapnhat FROM tbl_NhapHang";
             SqlDataAdapter data = new SqlDataAdapter(sql, Conn.GetConnection());
             data.Fill(dt);
 
@@ -95,7 +95,7 @@ namespace Web2_Ver2
             //Tạo datatable chứa dữ liệu
             DataTable dt = new DataTable();
             Conn.GetConnection();
-            String sql = "SELECT * FROM tbl_DonXuat";
+            String sql = "SELECT madonhang,tennhanvien,tennhacungcap,loaisanpham,soluongsanpham,ngaycapnhat FROM tbl_NhapHang";
             SqlDataAdapter data = new SqlDataAdapter(sql, Conn.GetConnection());
             data.Fill(dt);
 
@@ -146,7 +146,7 @@ namespace Web2_Ver2
             DataTable db = new DataTable();
 
             Conn.GetConnection();
-            String sql = "SELECT * FROM tbl_NhapHang WHERE tennhanvien LIKE '%" + sreach + "%'";
+            String sql = "SELECT * FROM tbl_NhapHang WHERE tennhanvien LIKE '%N" + sreach + "%'";
             SqlDataAdapter data = new SqlDataAdapter(sql, Conn.GetConnection());
             data.Fill(db);
             gvData.DataSource = db;
@@ -188,8 +188,8 @@ namespace Web2_Ver2
             {
                 Conn.GetConnection();
                 String insert = "INSERT INTO  tbl_NhapHang (madonhang, tennhanvien, tennhacungcap," +
-                                "loaisanpham,soluongsanpham, ngaycapnhat)" +
-                                "VALUES (@iD, @NameNV, @NameNCC, @SP, @SL, @Day)";
+                                "loaisanpham,soluongsanpham, ngaycapnhat,date)" +
+                                "VALUES (@iD, @NameNV, @NameNCC, @SP, @SL, @Day,@date)";
 
                 SqlCommand cmd = new SqlCommand(insert, Conn.GetConnection());
                 cmd.Parameters.AddWithValue("@iD", iD);
@@ -198,6 +198,7 @@ namespace Web2_Ver2
                 cmd.Parameters.AddWithValue("@SP", SP);
                 cmd.Parameters.AddWithValue("@SL", SL);
                 cmd.Parameters.AddWithValue("@Day", Day);
+                cmd.Parameters.AddWithValue("@date", Date.DateSapXep());
 
                 int check = cmd.ExecuteNonQuery();
 
@@ -241,11 +242,12 @@ namespace Web2_Ver2
                 }
                 reader.Close();
                 int SLN = SLC + SLM;
-                String updateSLSP = "UPDATE tbl_Products SET soluong=@SLN,ngaycapnhat=@day WHERE tensanpham=@tensanpham";
+                String updateSLSP = "UPDATE tbl_Products SET soluong=@SLN,ngaycapnhat=@day,date=@date WHERE tensanpham=@tensanpham";
                 SqlCommand updateCmm = new SqlCommand(updateSLSP, Conn.GetConnection());
                 updateCmm.Parameters.AddWithValue("@SLN", SLN.ToString());
                 updateCmm.Parameters.AddWithValue("@tensanpham", ListDanhSachLoaiSP.SelectedValue.ToString());
                 updateCmm.Parameters.AddWithValue("@day", Date.GetCurrentDateTimeString());
+                updateCmm.Parameters.AddWithValue("@date", Date.DateSapXep());
 
                 int check = updateCmm.ExecuteNonQuery();
 
@@ -263,8 +265,8 @@ namespace Web2_Ver2
         public void insertThongKe()
         {
             Conn.GetConnection();
-            String insertThongKe = "INSERT INTO tbl_ThongKe (madonhang,trangthai,tennhanvien,tensanpham,soluong,ngaycapnhat)" +
-                                           "VALUES (@madonhang,@trangthai,@tennhanvien,@tensanpham,@soluong,@Day)";
+            String insertThongKe = "INSERT INTO tbl_ThongKe (madonhang,trangthai,tennhanvien,tensanpham,soluong,ngaycapnhat,date)" +
+                                           "VALUES (@madonhang,@trangthai,@tennhanvien,@tensanpham,@soluong,@Day,@date)";
             SqlCommand insertThongKeCmm = new SqlCommand(insertThongKe, Conn.GetConnection());
             insertThongKeCmm.Parameters.AddWithValue("@madonhang", iD);
             insertThongKeCmm.Parameters.AddWithValue("@trangthai", "Nhập Hàng");
@@ -272,6 +274,7 @@ namespace Web2_Ver2
             insertThongKeCmm.Parameters.AddWithValue("@tensanpham", SP);
             insertThongKeCmm.Parameters.AddWithValue("@soluong", SL);
             insertThongKeCmm.Parameters.AddWithValue("@Day", Day);
+            insertThongKeCmm.Parameters.AddWithValue("@date", Date.DateSapXep());
             int check = insertThongKeCmm.ExecuteNonQuery();
             if (check > 0)
             {

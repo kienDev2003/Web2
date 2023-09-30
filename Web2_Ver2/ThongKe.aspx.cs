@@ -45,13 +45,15 @@ namespace Web2_Ver2
             // Tạo một DataTable và nạp dữ liệu từ cơ sở dữ liệu
             DataTable dt = new DataTable();
             Conn.GetConnection();
-            String sql = "SELECT * FROM tbl_ThongKe";
+            String sql = "SELECT madonhang,trangthai,tenkhachhang,tennhanvien,tensanpham,soluong,ngaycapnhat FROM tbl_ThongKe";
             SqlDataAdapter data = new SqlDataAdapter(sql, Conn.GetConnection());
             data.Fill(dt);
 
             // Tạo một tệp tin Excel tạm thời
             string tempFileName = System.IO.Path.GetTempFileName();
             FileInfo newFile = new FileInfo(tempFileName);
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
             using (ExcelPackage package = new ExcelPackage(newFile))
             {
@@ -80,7 +82,7 @@ namespace Web2_Ver2
             //Tạo datatable chứa dữ liệu
             DataTable dt = new DataTable();
             Conn.GetConnection();
-            String sql = "SELECT * FROM tbl_ThongKe";
+            String sql = "SELECT madonhang,trangthai,tenkhachhang,tennhanvien,tensanpham,soluong,ngaycapnhat FROM tbl_ThongKe";
             SqlDataAdapter data = new SqlDataAdapter(sql, Conn.GetConnection());
             data.Fill(dt);
 
@@ -129,7 +131,7 @@ namespace Web2_Ver2
         {
             Conn.GetConnection();
             DataTable dt = new DataTable();
-            String sql = "SELECT * FROM tbl_ThongKe";
+            String sql = "SELECT * FROM tbl_ThongKe ORDER BY date DESC";
             SqlDataAdapter data = new SqlDataAdapter(sql, Conn.GetConnection());
             data.Fill(dt);
             gvData.DataSource = dt;
@@ -142,7 +144,7 @@ namespace Web2_Ver2
             DataTable db = new DataTable();
 
             Conn.GetConnection();
-            String sql = "SELECT * FROM tbl_ThongKe WHERE tenkhachhang LIKE '%"+sreach+"%' OR tennhanvien LIKE '%"+sreach+"%'";
+            String sql = "SELECT * FROM tbl_ThongKe WHERE tenkhachhang LIKE '%N"+sreach+"%' OR tennhanvien LIKE '%N"+sreach+ "%' ORDER BY date DESC";
             SqlDataAdapter data = new SqlDataAdapter(sql, Conn.GetConnection());
             data.Fill(db);
             gvData.DataSource = db;

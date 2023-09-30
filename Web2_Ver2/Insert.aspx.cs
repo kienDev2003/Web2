@@ -30,15 +30,14 @@ namespace Web2_Ver2
             th = txtThuongHieu.Value;
             color = txtMauSac.Value;
             dl = txtDungLuong.Value;
-            sl = txtSoLuong.Value;
             gb = txtGiaBan.Value;
 
             try
             {
                 Conn.GetConnection();
                 String insert = "INSERT INTO  tbl_Products (masanpham, tensanpham, thuonghieu," +
-                                "mausac, dungluong, soluong, giaban, ngaycapnhat)" +
-                                "VALUES (@id, @name, @th, @color, @dl, @sl, @gb, @date)";
+                                "mausac, dungluong, giaban, ngaycapnhat,date)" +
+                                "VALUES (@id, @name, @th, @color, @dl, @gb, @date,@datesapxep)";
 
                 SqlCommand cmd = new SqlCommand(insert, Conn.GetConnection());
                 cmd.Parameters.AddWithValue("@id", id);
@@ -46,9 +45,9 @@ namespace Web2_Ver2
                 cmd.Parameters.AddWithValue("@th", th);
                 cmd.Parameters.AddWithValue("@color", color);
                 cmd.Parameters.AddWithValue("@dl", dl);
-                cmd.Parameters.AddWithValue("@sl", sl);
                 cmd.Parameters.AddWithValue("@gb", gb);
                 cmd.Parameters.AddWithValue("@date", Date.GetCurrentDateTimeString());
+                cmd.Parameters.AddWithValue("@datesapxep", Date.DateSapXep());
 
                 int check = cmd.ExecuteNonQuery();
 
