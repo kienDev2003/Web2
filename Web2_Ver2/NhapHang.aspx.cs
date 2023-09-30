@@ -146,7 +146,7 @@ namespace Web2_Ver2
             DataTable db = new DataTable();
 
             Conn.GetConnection();
-            String sql = "SELECT * FROM tbl_NhapHang WHERE tennhanvien LIKE '%N" + sreach + "%'";
+            String sql = "SELECT * FROM tbl_NhapHang WHERE tennhanvien LIKE N'%" + sreach + "%'";
             SqlDataAdapter data = new SqlDataAdapter(sql, Conn.GetConnection());
             data.Fill(db);
             gvData.DataSource = db;

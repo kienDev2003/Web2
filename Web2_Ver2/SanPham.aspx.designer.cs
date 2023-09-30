@@ -39,7 +39,7 @@ namespace Web2_Ver2
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputButton btnSreach;
+        protected global::System.Web.UI.HtmlControls.HtmlInputSubmit btnSreach;
 
         /// <summary>
         /// btnXuatFile control.

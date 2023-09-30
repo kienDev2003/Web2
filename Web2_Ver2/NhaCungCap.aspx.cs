@@ -144,7 +144,7 @@ namespace Web2_Ver2
             DataTable db = new DataTable();
 
             Conn.GetConnection();
-            String sql = "SELECT * FROM tbl_NCC WHERE tennhacungcap LIKE '%N" + sreach + "%' ORDER BY date DESC";
+            String sql = "SELECT * FROM tbl_NCC WHERE tennhacungcap LIKE N'%" + sreach + "%' ORDER BY date DESC";
             SqlDataAdapter data = new SqlDataAdapter(sql, Conn.GetConnection());
             data.Fill(db);
             gvData.DataSource = db;

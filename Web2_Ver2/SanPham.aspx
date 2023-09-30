@@ -22,7 +22,7 @@
             <center>
                 <input runat="server" style="display: block; width: 80%; font-size: 16px" id="txtSreach" type="text" placeholder="Nhập tên sản phẩm" />
             </center>
-            <input runat="server" onserverclick="btnSreach_Click" style="display: block; width: 10%; float: right; font-size: 17px; margin-right: 15px; margin-top: 5px" id="btnSreach" type="button" value="Tìm Kiếm" />
+            <input runat="server" onserverclick="btnSreach_Click" style="display: block; width: 10%; float: right; font-size: 17px; margin-right: 15px; margin-top: 5px" id="btnSreach" type="submit" value="Tìm Kiếm" />
             <br />
             <a href="./Insert.aspx">
                 <input style="font-size: 17px; margin-left: 15px; margin-top: 17px" id="btnAdd" type="button" value="Thêm Sản Phẩm" />
